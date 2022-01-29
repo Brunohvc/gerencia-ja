@@ -4,4 +4,10 @@
   <input placeholder="Password" [(ngModel)]='password' type="password">
   <br />
   <button (click)="logar()">Logar</button>
+  <button (click)="socialSignIn('google')">Sign in with Google</button>
+  <br />
+  <ng-select [(ngModel)]="selectedCar">
+    <ng-option *ngFor="let car of cars" [value]="car.id">{{car.name}}</ng-option>
+ </ng-select>
+ <span>{{selectedCar}}</span>
 </div>
