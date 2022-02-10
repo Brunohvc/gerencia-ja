@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserService } from '../services/user/user.service';
+
+import { UsuarioService } from '../services/usuario.service';
+
 import {
   AuthService,
   FacebookLoginProvider,
@@ -16,8 +18,8 @@ import {
 export class LoginComponent implements OnInit {
 
   constructor(
+    private usuarioService: UsuarioService,
     private router: Router,
-    private userService: UserService,
     private socialAuthService: AuthService
   ) {
   }
@@ -34,25 +36,26 @@ export class LoginComponent implements OnInit {
   ]
 
   ngOnInit() {
+    this.usuarioService.buscarUsuarios()
+      .then(resultado => {
+        console.log('RESULTADO:', resultado);
+      }).catch(erro => {
+        console.log('ERRO AO BUSCAR USUARIOS:', erro);
+      })
   }
 
   logar() {
-    console.log(this.username, this.password);
-    const users = [
-      { login: 'bruno', password: '123' },
-      { login: 'henrique', password: '123' },
-      { login: 'verbinnen', password: '123' },
-      { login: 'a', password: 'a' },
-    ];
-
-    const find = users.find(e => e.login == this.username && e.password == this.password);
-
-    if (find) {
-      localStorage.setItem('USER', this.username);
-      this.router.navigate(['/loja']);
-    } else {
-      alert('Usuário não cadastrado!');
-    }
+    // this.usuarioService.login(this.username, this.password).then((dados: any) => {
+    //   if (dados.user) {
+    //     console.log(dados);
+    //     localStorage.setItem('USER', dados.user.nickname);
+    //     this.router.navigate(['/loja']);
+    //   } else {
+    //     alert('Usuário e senha incorretos!');
+    //   }
+    // }).catch(erro => {
+    //   console.log(erro);
+    // });
   }
 
   public socialSignIn() {
